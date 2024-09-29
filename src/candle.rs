@@ -1,8 +1,6 @@
-use crate::order::Coin;
-
 pub struct Candle {
-    open: f64,
-    high: f64,
-    low: f64,
-    close: f64,
+    pub open: f64,
+    pub high: f64,
+    pub low: f64,
+    pub close: f64,
 }

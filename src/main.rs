@@ -1,6 +1,7 @@
 mod exchange;
 mod order;
-mod Candle;
+mod candle;
+mod coin;
 
 fn main() {
     println!("Hello, world!");
