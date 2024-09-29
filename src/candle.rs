@@ -1,3 +1,4 @@
+#[derive(Clone)]
 pub struct Candle {
     pub open: f64,
     pub high: f64,

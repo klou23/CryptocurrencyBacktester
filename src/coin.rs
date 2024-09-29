@@ -1,7 +1,6 @@
-use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
 
-#[derive(strum_macros::Display, EnumIter, PartialEq, Eq, Hash)]
+#[derive(strum_macros::Display, EnumIter, PartialEq, Eq, Hash, Clone)]
 pub enum Coin {
     ADA,
     BCH,
@@ -15,5 +14,5 @@ pub enum Coin {
     TRX,
     XRP,
     XTZ,
-    ZEC
+    ZEC,
 }
