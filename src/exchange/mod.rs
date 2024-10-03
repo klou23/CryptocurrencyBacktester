@@ -7,19 +7,24 @@ pub mod long_only_btc_candle_exchange;
 /// An exchange is designed to only serve a single client (the strategy)
 /// Numbered message channels can be used to represent different websockets/requests
 pub trait Exchange {
-
     /// Initializes exchange from data source
     fn init(&mut self);
 
-    /// Handles a single message from the client
-    fn handle_message(&mut self, channel: u8, message: String);
+    /// Handles a single message from the strategy
+    fn handle_message(&mut self, channel: u8, message: String, tx: &mpsc::Sender<(u8, String)>);
 
-    /// Processes all messages in the channel
-    fn process_messages(&mut self, rx: &mpsc::Receiver<(u8, String)>) {
+    /// Processes all messages in the receiver channel
+    fn process_messages(
+        &mut self,
+        rx: &mpsc::Receiver<(u8, String)>,
+        tx: &mpsc::Sender<(u8, String)>,
+    ) {
         loop {
             match rx.try_recv() {
-                Ok((channel, message)) => {self.handle_message(channel, message)}
-                Err(_) => {break;}
+                Ok((channel, message)) => self.handle_message(channel, message, tx),
+                Err(_) => {
+                    break;
+                }
             }
         }
     }
@@ -28,6 +33,6 @@ pub trait Exchange {
     fn can_update(&self) -> bool;
 
     /// Updates the exchange to the next time step and all necessary work
-    fn update(&mut self);
-
+    /// Sends all messages through tx
+    fn update(&mut self, tx: &mpsc::Sender<(u8, String)>);
 }
